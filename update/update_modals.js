@@ -35,7 +35,8 @@ module.exports = {
       const CHECK_MIN    = base?.ปรับกำหนดเวลาเช็คสลิป || "5";
 
       // === 1) ตั้งค่า API ธนาคาร (SlipOK) ===
-      if (interaction.customId === "setting_topup") {
+      // รองรับทั้ง customId เก่าและใหม่
+      if (interaction.customId === "setting_topup" || interaction.customId === "modal_topup_bank") {
         const modal = new ModalBuilder()
           .setCustomId("topup_modal_bank")
           .setTitle("ตั้งค่า API ธนาคาร (SlipOK)")
@@ -81,7 +82,8 @@ module.exports = {
       }
 
       // === 2) ตั้งค่า TrueMoney Wallet (Voucher) ===
-      if (interaction.customId === "setting_topup_wallet") {
+      // รองรับทั้ง customId เก่าและใหม่
+      if (interaction.customId === "setting_topup_wallet" || interaction.customId === "modal_topup_wallet") {
         const modal = new ModalBuilder()
           .setCustomId("topup_modal_wallet")
           .setTitle("ตั้งค่า TrueMoney Wallet (ซองอั่งเปา)")
@@ -118,7 +120,8 @@ module.exports = {
       }
 
       // === 3) ตั้งค่า ช่อง/ยศ/เวลา (ธนาคาร) ===
-      if (interaction.customId === "setting_channel_bank") {
+      // รองรับทั้ง customId เก่าและใหม่
+      if (interaction.customId === "setting_channel_bank" || interaction.customId === "modal_channel_bank") {
         const modal = new ModalBuilder()
           .setCustomId("channel_modal_bank")
           .setTitle("ตั้งค่า ช่อง/ยศ/เวลาตรวจสลิป")

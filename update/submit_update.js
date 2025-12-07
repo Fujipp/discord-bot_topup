@@ -1,9 +1,11 @@
-// events/submit_update.js
+// update/submit_update.js
+// Legacy handler - ใช้ interactions/configInteractions.js แทน
 const fs = require("fs");
 const path = require("path");
 const { MessageFlags } = require("discord.js");
+const ConfigManager = require("../utils/configManager");
 
-const SAVE_PATH = path.resolve(__dirname, "../update/logdata.json");
+const SAVE_PATH = path.resolve(__dirname, "./logdata.json");
 const truthy = (v) => v !== undefined && v !== null && String(v).trim() !== "";
 const load = () => { try { return JSON.parse(fs.readFileSync(SAVE_PATH, "utf8")); } catch { return {}; } };
 const save = (o) => fs.writeFileSync(SAVE_PATH, JSON.stringify(o, null, 2));
@@ -26,13 +28,11 @@ module.exports = {
         if (truthy(branchId)) {
           branchId = branchId.trim().replace(/\/+$/,'');
           if (/^https?:\/\//i.test(branchId)) branchId = branchId.split("/").pop();
-          data["SLIPOK_BRANCH_ID"] = branchId;
+          ConfigManager.set("SLIPOK_BRANCH_ID", branchId);
         }
-        if (truthy(slipokKey)) data["API_SLIPOK_KEY"] = slipokKey.trim();
-        if (truthy(ppPhone))   data["เบอร์รับเงินพ้อมเพย์"] = ppPhone.trim();
-        if (truthy(minAmt))    data["เติมเงินขั้นต่ำของธนาคาร"] = minAmt.trim();
-
-        save(data);
+        if (truthy(slipokKey)) ConfigManager.set("API_SLIPOK_KEY", slipokKey.trim());
+        if (truthy(ppPhone))   ConfigManager.set("เบอร์รับเงินพ้อมเพย์", ppPhone.trim());
+        if (truthy(minAmt))    ConfigManager.set("เติมเงินขั้นต่ำของธนาคาร", minAmt.trim());
         return interaction.reply({ content: "✅ บันทึกค่าธนาคาร (SlipOK) แล้ว", flags: MessageFlags.Ephemeral });
       }
 
@@ -42,11 +42,9 @@ module.exports = {
         const walletKeyId = interaction.fields.getTextInputValue("wallet_key_id");
         const walletBase  = interaction.fields.getTextInputValue("wallet_base_url");
 
-        if (truthy(walletPhone)) data["เบอร์รับเงินวอเลท"] = walletPhone.trim();
-        if (truthy(walletKeyId)) data["API_TRUEMONEY_KEY_ID"] = walletKeyId.trim();
-        if (truthy(walletBase))  data["TRUEMONEY_BASE"] = walletBase.trim();
-
-        save(data);
+        if (truthy(walletPhone)) ConfigManager.set("เบอร์รับเงินวอเลท", walletPhone.trim());
+        if (truthy(walletKeyId)) ConfigManager.set("API_TRUEMONEY_KEY_ID", walletKeyId.trim());
+        if (truthy(walletBase))  ConfigManager.set("TRUEMONEY_BASE", walletBase.trim());
         return interaction.reply({ content: "✅ บันทึกค่าบัญชีวอเลต (TrueMoney) แล้ว", flags: MessageFlags.Ephemeral });
       }
 
@@ -61,9 +59,8 @@ module.exports = {
         };
         for (const [key, id] of Object.entries(fields)) {
           const v = interaction.fields.getTextInputValue(id);
-          if (truthy(v)) data[key] = v.trim();
+          if (truthy(v)) ConfigManager.set(key, v.trim());
         }
-        save(data);
         return interaction.reply({ content: "✅ บันทึกช่อง/ยศ/เวลา แล้ว", flags: MessageFlags.Ephemeral });
       }
     } catch (err) {

@@ -44,13 +44,13 @@ module.exports = {
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId("buy_topup")              // ไปต่อ menu_topup.js / wallet.js
-        .setLabel("꒰ เติมเงิน ꒱")
-        .setEmoji("<a:BitCoin:1291488881975496826>")
+        .setLabel("เติมเงิน")
+        .setEmoji("<:Ts_22_discord_4plus:1397892632960831548>")
         .setStyle(ButtonStyle.Danger),
       new ButtonBuilder()
         .setCustomId("chack_topup")            // ไปต่อ chack_topup.js
-        .setLabel("꒰ เช็คยอดเงิน ꒱")
-        .setEmoji("<:MJ_Mark_Money:1291489170451075186>")
+        .setLabel("เช็คยอดเงิน")
+        .setEmoji("<a:Ts_29_discord_star8:1399003269216469133>")
         .setStyle(ButtonStyle.Primary)
     );
 

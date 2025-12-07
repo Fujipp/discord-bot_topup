@@ -123,7 +123,8 @@ module.exports = {
       }
 
       const s = readLog();
-      const phone = String(s?.เบอร์รับเงินวอเลท || "").replace(/\D/g, "");
+      // อ่านจาก .env ก่อน ถ้าไม่มีจึงอ่านจาก logdata.json (backward compatible)
+      const phone = String(process.env.TRUEMONEY_PHONE || s?.เบอร์รับเงินวอเลท || "").replace(/\D/g, "");
       if (phone.length !== 10) {
         return failReply(buildFatal({ avatar, reason: "ยังไม่ได้ตั้งค่าเบอร์รับเงิน TrueMoney Wallet (ต้องมี 10 หลัก)" }));
       }

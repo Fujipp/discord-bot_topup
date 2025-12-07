@@ -9,20 +9,8 @@ const {
   ButtonStyle,
   MessageFlags,
 } = require("discord.js");
-const fs = require("fs");
-const path = require("path");
-
-function getPanelData() {
-  const serverPath = path.resolve(__dirname, "../update/logdata.json");
-  let data = {};
-  try { data = JSON.parse(fs.readFileSync(serverPath, "utf8")); } catch {}
-  return {
-    price1:   data?.["ราคาบูสต์หนึ่งเดือน"] || "รอเพิ่ม",
-    price3:   data?.["ราคาบูสต์สามเดือน"]  || "รอเพิ่ม",
-    chBoost:  data?.["ไอดีช่องส่งประวัติการบูสต์"] || "รอเพิ่ม",
-    chOrders: data?.["ไอดีช่องส่งออเดอร์แอดมิน"]   || "รอเพิ่ม",
-  };
-}
+const ConfigManager = require("../utils/configManager");
+const ConfigEmbed = require("../utils/configEmbed");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -33,36 +21,24 @@ module.exports = {
     // กัน timeout 3 วิ
     await interaction.deferReply({ ephemeral: true });
 
-    const { price1, price3, chBoost, chOrders } = getPanelData();
-
-    const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
-      .setTitle("``⚙️`` ตั้งค่าระบบตั้งค่าหลังบ้าน")
-      .addFields(
-        { name: `\`\`💰\`\` ราคาบูสต์หนึ่งเดือน \`\` ${price1} \`\``, value: "_ _" },
-        { name: `\`\`💰\`\` ราคาบูสต์สามเดือน \`\` ${price3} \`\``, value: "_ _" },
-        { name: `\`\`🆔\`\` ไอดีช่องส่งประวัติการบูสต์ \`\` ${chBoost} \`\``, value: "_ _" },
-        { name: `\`\`🆔\`\` ไอดีช่องส่งออเดอร์แอดมิน \`\` ${chOrders} \`\``, value: "_ _" },
-      )
-      .setImage("https://img2.pic.in.th/pic/8617984945af94a5f32129eb7522f39a.png");
+    const embed = ConfigEmbed.buildStatusEmbed();
 
     const selectRow = new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
-        .setCustomId("refresh")
-        .setPlaceholder("🔄 รีเฟชรหน้าต่าง")
-        .addOptions([{ label: "รีเฟชรดูการอัปเดต", emoji: "🔄", value: "setup" }])
+        .setCustomId("refresh_config")
+        .setPlaceholder("🔄 รีเฟชร์สถานะการตั้งค่า")
+        .addOptions([{ label: "รีเฟชร์ดูการอัปเดต", emoji: "🔄", value: "setup" }])
     );
 
     const row1 = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId("setting_topup").setLabel("🏛️ ตั้งค่า API ธนาคาร").setStyle(ButtonStyle.Danger),
-      new ButtonBuilder().setCustomId("setting_topup_wallet").setLabel("🧧 ตั้งค่าบัญชีวอเลต").setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId("setting_channel").setLabel("🆔 ตั้งค่าไอดีช่อง (ทั่วไป)").setStyle(ButtonStyle.Success),
+      new ButtonBuilder().setCustomId("modal_topup_bank").setLabel("🏦 ตั้งค่า SlipOK").setStyle(ButtonStyle.Danger),
+      new ButtonBuilder().setCustomId("modal_topup_wallet").setLabel("🧧 ตั้งค่า TrueMoney").setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setCustomId("modal_channel_bank").setLabel("🆔 ตั้งค่าช่อง/ยศ").setStyle(ButtonStyle.Success),
     );
 
     const row2 = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId("setting_channel_bank").setLabel("🏦 ตั้งค่าไอดีช่อง/ยศ (ธนาคาร)").setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder().setCustomId("price_boot").setLabel("💰 ตั้งราคาสินค้า").setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId("setting_payment_embed").setLabel("🧱 ตั้งค่า Payment Embed").setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId("view_all_config").setLabel("📋 ดูการตั้งค่าทั้งหมด").setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId("reset_config").setLabel("🔄 รีเซ็ตการตั้งค่า").setStyle(ButtonStyle.Secondary),
     );
 
     await interaction.editReply({

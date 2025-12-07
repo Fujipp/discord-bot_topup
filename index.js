@@ -85,6 +85,7 @@ const bindEventsFromDir = (dirPath) => {
 bindEventsFromDir(path.join(__dirname, 'events'));
 bindEventsFromDir(path.join(__dirname, 'bank'));
 bindEventsFromDir(path.join(__dirname, 'update'));
+bindEventsFromDir(path.join(__dirname, 'interactions'));
 
 // ready
 client.once(Events.ClientReady, () => {

@@ -15,8 +15,9 @@ function readConf() {
  */
 async function META_API(giftUrl, phone) {
   const cfg = readConf();
-  const KEY_ID = (cfg.API_TRUEMONEY_KEY_ID || '').trim();
-  const BASE   = (cfg.TRUEMONEY_BASE || 'https://true-wallet-voucher-production.up.railway.app').replace(/\/+$/,'');
+  // อ่านจาก .env ก่อน ถ้าไม่มีจึงอ่านจาก logdata.json (backward compatible)
+  const KEY_ID = (process.env.API_TRUEMONEY_KEY_ID || cfg.API_TRUEMONEY_KEY_ID || '').trim();
+  const BASE   = (process.env.TRUEMONEY_BASE || cfg.TRUEMONEY_BASE || 'https://true-wallet-voucher-production.up.railway.app').replace(/\/+$/,'');
   if (!KEY_ID) return { ok: false, error: { message: 'missing API_TRUEMONEY_KEY_ID' } };
 
   try {

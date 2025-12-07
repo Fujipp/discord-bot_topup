@@ -162,9 +162,10 @@ module.exports = {
       if (!channelCheckId || String(message.channel.id) !== channelCheckId) return;
 
       // sanitize SLIPOK_BRANCH_ID (รองรับกรณีพิมพ์ลิงก์เต็ม)
-      let branchId = String(cfg?.SLIPOK_BRANCH_ID || "").trim().replace(/\/+$/, "");
+      // อ่านจาก .env ก่อน ถ้าไม่มีจึงอ่านจาก logdata.json (backward compatible)
+      let branchId = String(process.env.SLIPOK_BRANCH_ID || cfg?.SLIPOK_BRANCH_ID || "").trim().replace(/\/+$/, "");
       if (/^https?:\/\//i.test(branchId)) branchId = branchId.split("/").pop();
-      const apiKey = String(cfg?.API_SLIPOK_KEY || "").trim();
+      const apiKey = String(process.env.API_SLIPOK_KEY || cfg?.API_SLIPOK_KEY || "").trim();
 
       const avatar = message.author.displayAvatarURL();
       const username = message.author.username;
