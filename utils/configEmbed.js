@@ -40,6 +40,16 @@ class ConfigEmbed {
             : '(ยังไม่ได้ตั้ง)';
         } else if (item.type === 'boolean') {
           displayValue = item.value ? '🟢 เปิดอยู่' : '🔴 ปิดอยู่';
+        } else if (item.type === 'list') {
+          const list = Array.isArray(item.value)
+            ? item.value
+            : String(item.value || '')
+                .split(/[,\n]/)
+                .map(s => s.trim())
+                .filter(Boolean);
+          if (!list.length) displayValue = '(ยังไม่ได้ตั้ง)';
+          else if (list.length <= 3) displayValue = list.join(', ');
+          else displayValue = `${list.slice(0,3).join(', ')} … (+${list.length - 3})`;
         } else if (item.type === 'channel' && item.value && item.value.length > 15) {
           displayValue = `<#${item.value}>`;
         } else if (item.type === 'role' && item.value && item.value.length > 15) {
@@ -155,9 +165,20 @@ class ConfigEmbed {
       .setTimestamp();
 
     if (info.type !== 'secret' && info.value) {
+      let display = info.value;
+      if (info.type === 'list') {
+        const list = Array.isArray(info.value)
+          ? info.value
+          : String(info.value || '')
+              .split(/[,\n]/)
+              .map(s => s.trim())
+              .filter(Boolean);
+        display = list.length ? list.join(', ') : '(ยังไม่ได้ตั้ง)';
+      }
+
       embed.addFields({
         name: '📄 ค่า',
-        value: `\`\`\`${info.value}\`\`\``,
+        value: `\`\`\`${display}\`\`\``,
         inline: false,
       });
     }

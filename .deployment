@@ -1,0 +1,9 @@
+{
+  "runtime": "node",
+  "runtimeVersion": "20",
+  "watchFiles": [
+    "index.js",
+    "server.js",
+    "package.json"
+  ]
+}

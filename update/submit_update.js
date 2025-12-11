@@ -21,18 +21,18 @@ module.exports = {
       if (interaction.customId === "topup_modal_bank") {
         let branchId = interaction.fields.getTextInputValue("slipok_branch_id");
         const slipokKey = interaction.fields.getTextInputValue("slipok_api_key");
-        const ppPhone   = interaction.fields.getTextInputValue("promptpay_phone");
-        const minAmt    = interaction.fields.getTextInputValue("min_amount_bank");
+        const ppPhone = interaction.fields.getTextInputValue("promptpay_phone");
+        const minAmt = interaction.fields.getTextInputValue("min_amount_bank");
 
         // sanitize: รับได้ทั้ง “12345” หรือ “https://.../apikey/12345”
         if (truthy(branchId)) {
-          branchId = branchId.trim().replace(/\/+$/,'');
+          branchId = branchId.trim().replace(/\/+$/, '');
           if (/^https?:\/\//i.test(branchId)) branchId = branchId.split("/").pop();
           ConfigManager.set("SLIPOK_BRANCH_ID", branchId);
         }
         if (truthy(slipokKey)) ConfigManager.set("API_SLIPOK_KEY", slipokKey.trim());
-        if (truthy(ppPhone))   ConfigManager.set("เบอร์รับเงินพ้อมเพย์", ppPhone.trim());
-        if (truthy(minAmt))    ConfigManager.set("เติมเงินขั้นต่ำของธนาคาร", minAmt.trim());
+        if (truthy(ppPhone)) ConfigManager.set("เบอร์รับเงินพ้อมเพย์", ppPhone.trim());
+        if (truthy(minAmt)) ConfigManager.set("เติมเงินขั้นต่ำของธนาคาร", minAmt.trim());
         return interaction.reply({ content: "✅ บันทึกค่าธนาคาร (SlipOK) แล้ว", flags: MessageFlags.Ephemeral });
       }
 
@@ -40,11 +40,11 @@ module.exports = {
       if (interaction.customId === "topup_modal_wallet") {
         const walletPhone = interaction.fields.getTextInputValue("wallet_phone");
         const walletKeyId = interaction.fields.getTextInputValue("wallet_key_id");
-        const walletBase  = interaction.fields.getTextInputValue("wallet_base_url");
+        const walletBase = interaction.fields.getTextInputValue("wallet_base_url");
 
         if (truthy(walletPhone)) ConfigManager.set("เบอร์รับเงินวอเลท", walletPhone.trim());
         if (truthy(walletKeyId)) ConfigManager.set("API_TRUEMONEY_KEY_ID", walletKeyId.trim());
-        if (truthy(walletBase))  ConfigManager.set("TRUEMONEY_BASE", walletBase.trim());
+        if (truthy(walletBase)) ConfigManager.set("TRUEMONEY_BASE", walletBase.trim());
         return interaction.reply({ content: "✅ บันทึกค่าบัญชีวอเลต (TrueMoney) แล้ว", flags: MessageFlags.Ephemeral });
       }
 
@@ -63,10 +63,34 @@ module.exports = {
         }
         return interaction.reply({ content: "✅ บันทึกช่อง/ยศ/เวลา แล้ว", flags: MessageFlags.Ephemeral });
       }
+
+      // 4) Roblox Robux Config
+      if (interaction.customId === "roblox_modal_config") {
+        const rate = interaction.fields.getTextInputValue("robux_rate");
+        const enabled = interaction.fields.getTextInputValue("robux_enabled");
+        const notify = interaction.fields.getTextInputValue("robux_notify_channel");
+        const cooldown = interaction.fields.getTextInputValue("robux_cooldown");
+
+        if (truthy(rate)) {
+          // ยอมรับแค่ 3.5 หรือ 4
+          const rateVal = rate.trim();
+          if (rateVal === "3.5" || rateVal === "4") {
+            ConfigManager.set("ROBUX_RATE", rateVal);
+          }
+        }
+        if (truthy(enabled)) {
+          const en = enabled.trim().toLowerCase();
+          ConfigManager.set("ROBUX_ENABLED", en === "เปิด" || en === "true" || en === "1");
+        }
+        if (truthy(notify)) ConfigManager.set("ROBUX_NOTIFY_CHANNEL", notify.trim());
+        if (truthy(cooldown)) ConfigManager.set("ROBUX_PAYOUT_COOLDOWN", cooldown.trim());
+
+        return interaction.reply({ content: "✅ บันทึกค่า Roblox Robux แล้ว", flags: MessageFlags.Ephemeral });
+      }
     } catch (err) {
       console.error("submit_update error:", err);
       if (interaction.isRepliable?.() && !interaction.replied && !interaction.deferred) {
-        await interaction.reply({ content: "❌ เกิดข้อผิดพลาด", flags: MessageFlags.Ephemeral }).catch(()=>{});
+        await interaction.reply({ content: "❌ เกิดข้อผิดพลาด", flags: MessageFlags.Ephemeral }).catch(() => { });
       }
     }
   }

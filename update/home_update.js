@@ -9,14 +9,30 @@ const {
   ButtonStyle,
   MessageFlags,
 } = require("discord.js");
+const ConfigManager = require("../utils/configManager");
 
 function getAllowedUserIds() {
   try {
+    // อ่านจาก ConfigManager ก่อน
+    const configData = ConfigManager.get("allowedUserIds");
+    if (configData) {
+      return Array.isArray(configData) ? configData : [];
+    }
+    
+    // Fallback ไปยัง alias key
+    const aliasData = ConfigManager.get("ไอดีผู้ใช้งานที่ใช้คำสั่งได้");
+    if (aliasData) {
+      return Array.isArray(aliasData) ? aliasData : [];
+    }
+    
+    // Fallback ไปยัง config.json (เพื่อความเข้ากันได้เดิม)
     const cfg = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../config.json"), "utf8"));
     if (Array.isArray(cfg?.allowedUserIds)) return cfg.allowedUserIds;
     if (Array.isArray(cfg?.["ไอดีผู้ใช้งานที่ใช้คำสั่งได้"])) return cfg["ไอดีผู้ใช้งานที่ใช้คำสั่งได้"];
     return [];
-  } catch { return []; }
+  } catch { 
+    return []; 
+  }
 }
 
 function getPanelData() {

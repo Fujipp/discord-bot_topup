@@ -140,6 +140,16 @@ class ConfigManager {
         required: false,
         order: 3,
       },
+      'TRUEMONEY_FEE': {
+        label: '💸 ค่าธรรมเนียม',
+        description: 'จำนวนเงินที่หักจากการเติม TrueMoney (บาท)',
+        category: 'truemoney',
+        categoryLabel: '🧧 TrueMoney Wallet',
+        type: 'number',
+        required: false,
+        order: 4,
+        default: 5,
+      },
 
       // === Discord Channels ===
       'ไอดีช่องเช็คสลิป': {
@@ -180,6 +190,24 @@ class ConfigManager {
         required: false,
         order: 2,
       },
+      'ALLOWED_ROLES_PAYMENT': {
+        label: '🎫 Role ใช้คำสั่ง /payment',
+        description: 'Role IDs ที่มีสิทธิ์ใช้คำสั่ง /payment (คั่นด้วย , หลายยศ)',
+        category: 'roles',
+        categoryLabel: '👥 Discord Roles',
+        type: 'text',
+        required: false,
+        order: 3,
+      },
+      'ALLOWED_ROLES_USER': {
+        label: '👤 Role ใช้คำสั่ง /user',
+        description: 'Role IDs ที่มีสิทธิ์ใช้คำสั่ง /user (คั่นด้วย , หลายยศ)',
+        category: 'roles',
+        categoryLabel: '👥 Discord Roles',
+        type: 'text',
+        required: false,
+        order: 4,
+      },
 
       // === System Settings ===
       'ปรับกำหนดเวลาเช็คสลิป': {
@@ -200,6 +228,56 @@ class ConfigManager {
         required: false,
         order: 2,
       },
+      'allowedUserIds': {
+        label: '🛂 ผู้ใช้ที่ใช้คำสั่งได้',
+        description: 'User IDs ที่อนุญาตให้ใช้คำสั่งแอดมิน (คั่นด้วย , หรือบรรทัดใหม่)',
+        category: 'system',
+        categoryLabel: '⚙️ ตั้งค่าระบบ',
+        type: 'list',
+        required: false,
+        order: 3,
+      },
+      'ไอดีผู้ใช้งานที่ใช้คำสั่งได้': {
+        label: '🛂 ผู้ใช้ที่ใช้คำสั่งได้ (เดิม)',
+        description: 'User IDs ที่อนุญาตให้ใช้คำสั่งแอดมิน (alias)',
+        category: 'system',
+        categoryLabel: '⚙️ ตั้งค่าระบบ',
+        type: 'list',
+        required: false,
+        order: 4,
+      },
+
+      // === Roblox Robux Settings ===
+      'ROBUX_RATE': {
+        label: '💱 เรท Robux',
+        description: 'เลือกเรท: 3.5 (1 บาท = 3.5 Robux) หรือ 4 (1 บาท = 4 Robux)',
+        category: 'roblox',
+        categoryLabel: '🎮 Roblox Robux',
+        type: 'select',
+        options: ['3.5', '4'],
+        required: false,
+        order: 1,
+        default: '3.5',
+      },
+      'ROBUX_NOTIFY_CHANNEL': {
+        label: '🔔 ช่องแจ้งเตือน Payout',
+        description: 'ID ของช่อง Discord สำหรับแจ้งเตือนเมื่อ Payout สำเร็จ/ล้มเหลว',
+        category: 'roblox',
+        categoryLabel: '🎮 Roblox Robux',
+        type: 'channel',
+        required: false,
+        order: 2,
+      },
+      'ROBUX_PAYOUT_COOLDOWN': {
+        label: '⏱️ Cooldown (วินาที)',
+        description: 'เวลารอระหว่างการ Payout แต่ละครั้ง (ป้องกัน rate limit)',
+        category: 'roblox',
+        categoryLabel: '🎮 Roblox Robux',
+        type: 'number',
+        required: false,
+        order: 3,
+        default: 5,
+      },
     };
   }
 
@@ -219,7 +297,7 @@ class ConfigManager {
       const value = this.get(key);
       const envKey = this._keyToEnv(key);
       const fromEnv = !!process.env[envKey];
-      
+
       result[key] = {
         label: field.label,
         description: field.description,

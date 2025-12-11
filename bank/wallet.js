@@ -1,12 +1,13 @@
 // bank/wallet.js (patched → handler เดียว)
 const fs = require("fs");
 const path = require("path");
-const { addBalance } = require("./base");
+const { addBalance, recordTopup } = require("./base");
 const { META_API } = require("../api/truemoney");
 const {
   TextInputBuilder, ActionRowBuilder, ModalBuilder, TextInputStyle,
   EmbedBuilder, MessageFlags
 } = require("discord.js");
+const ConfigManager = require("../utils/configManager");
 
 function readLog() {
   try { return JSON.parse(fs.readFileSync(path.join(__dirname, "../update/logdata.json"), "utf8")); }
@@ -16,8 +17,8 @@ function readLog() {
 const COLOR = 3618621;
 const GIF_LOADING = "https://www.animatedimages.org/data/media/562/animated-line-image-0124.gif";
 const GIF_SUCCESS = "https://www.animatedimages.org/data/media/562/animated-line-image-0312.gif";
-const GIF_FAIL    = "https://www.animatedimages.org/data/media/562/animated-line-image-0104.gif";
-const GIF_FATAL   = "https://www.animatedimages.org/data/media/562/animated-line-image-0538.gif";
+const GIF_FAIL = "https://www.animatedimages.org/data/media/562/animated-line-image-0104.gif";
+const GIF_FATAL = "https://www.animatedimages.org/data/media/562/animated-line-image-0538.gif";
 
 function tsDiscord(date = new Date()) {
   const unix = Math.floor(date.getTime() / 1000);
@@ -150,15 +151,31 @@ module.exports = {
       }
 
       const payload = res.data || {};
-      const amount = Number(payload.amount || 0);
-      if (!Number.isFinite(amount) || amount <= 0) {
+      const rawAmount = Number(payload.amount || 0);
+      if (!Number.isFinite(rawAmount) || rawAmount <= 0) {
         return interaction.editReply({
           embeds: [buildFail({ avatar, reason: "ตอบกลับไม่พบจำนวนเงินที่เติม", timestamp: tsDiscord() })],
           components: [],
         });
       }
 
+      // หักค่าธรรมเนียม TrueMoney (ค่า default 5 บาท)
+      const truemoneyFee = Number(ConfigManager.get('TRUEMONEY_FEE', 5)) || 5;
+      const amount = Math.max(0, rawAmount - truemoneyFee);
+
+      console.log(`[TrueMoney] Raw: ${rawAmount}, Fee: ${truemoneyFee}, Net: ${amount}`);
+
+      if (amount <= 0) {
+        return interaction.editReply({
+          embeds: [buildFail({ avatar, reason: `ยอดเงินหลังหักค่าธรรมเนียม ${truemoneyFee} บาท ไม่เพียงพอ`, timestamp: tsDiscord() })],
+          components: [],
+        });
+      }
+
       const after = addBalance(interaction.user.id, amount);
+
+      // บันทึกประวัติการเติมเงิน (สำหรับ 2-layer protection)
+      recordTopup(interaction.user.id, amount, "TrueMoney");
 
       // แสดงผลสำเร็จ (Ephemeral)
       const successEmbed = buildSuccess({

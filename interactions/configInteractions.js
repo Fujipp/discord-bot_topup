@@ -139,6 +139,29 @@ function createChannelModal() {
   return modal;
 }
 
+function createAllowedUsersModal() {
+  const modal = new ModalBuilder()
+    .setCustomId("allowed_users_modal")
+    .setTitle("🛂 กำหนดผู้ใช้ที่ใช้คำสั่งได้");
+
+  const rawValue = ConfigManager.get("allowedUserIds") ?? ConfigManager.get("ไอดีผู้ใช้งานที่ใช้คำสั่งได้") ?? "";
+  const currentValue = Array.isArray(rawValue)
+    ? rawValue.join("\n")
+    : String(rawValue || "");
+
+  const allowedUsersInput = new TextInputBuilder()
+    .setCustomId("allowed_users_list")
+    .setLabel("รายการ User ID (คั่นด้วย , หรือบรรทัดใหม่)")
+    .setStyle(TextInputStyle.Paragraph)
+    .setPlaceholder("123,456\n789")
+    .setRequired(false)
+    .setValue(currentValue);
+
+  modal.addComponents(new ActionRowBuilder().addComponents(allowedUsersInput));
+
+  return modal;
+}
+
 module.exports = {
   name: "interactionCreate",
   async execute(_client, interaction) {
@@ -162,6 +185,11 @@ module.exports = {
 
         if (customId === "modal_channel_bank") {
           await interaction.showModal(createChannelModal());
+          return;
+        }
+
+        if (customId === "modal_allowed_users") {
+          await interaction.showModal(createAllowedUsersModal());
           return;
         }
 
@@ -256,8 +284,30 @@ module.exports = {
       }
 
       // === MODAL SUBMIT ===
-      // Modal submit handlers จัดการโดย update/submit_update.js แล้ว
-      // (topup_modal_bank, topup_modal_wallet, channel_modal_bank)
+      if (interaction.isModalSubmit()) {
+        if (interaction.customId === "allowed_users_modal") {
+          const rawInput = interaction.fields.getTextInputValue("allowed_users_list") || "";
+          
+          // Parse comma-separated or newline-separated IDs
+          const userIds = rawInput
+            .split(/[,\n]+/)
+            .map(id => id.trim())
+            .filter(id => /^\d+$/.test(id)); // ยอมรับแค่ตัวเลข
+          
+          // บันทึกลง ConfigManager ทั้งสองคีย์
+          ConfigManager.set("allowedUserIds", userIds);
+          ConfigManager.set("ไอดีผู้ใช้งานที่ใช้คำสั่งได้", userIds);
+          
+          const summary = userIds.length === 0 
+            ? "ไม่มีผู้ใช้ที่จำกัด" 
+            : `${userIds.length} คน: ${userIds.join(", ")}`;
+          
+          return interaction.reply({
+            content: `✅ บันทึกผู้ใช้ที่ใช้คำสั่งได้แล้ว\n📝 รายการ: ${summary}`,
+            flags: MessageFlags.Ephemeral,
+          });
+        }
+      }
 
       // === SELECT MENU ===
       if (interaction.isStringSelectMenu()) {
@@ -288,6 +338,10 @@ module.exports = {
           );
 
           const row2 = new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+              .setCustomId("modal_allowed_users")
+              .setLabel("🛂 กำหนดผู้ใช้ที่สั่งได้")
+              .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
               .setCustomId("view_all_config")
               .setLabel("📋 ดูทั้งหมด")

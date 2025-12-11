@@ -37,8 +37,9 @@ module.exports = {
     );
 
     const row2 = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId("modal_allowed_users").setLabel("🛂 กำหนดผู้ใช้ที่สั่งได้").setStyle(ButtonStyle.Primary),
       new ButtonBuilder().setCustomId("view_all_config").setLabel("📋 ดูการตั้งค่าทั้งหมด").setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder().setCustomId("reset_config").setLabel("🔄 รีเซ็ตการตั้งค่า").setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId("reset_config").setLabel("🔄 รีเซ็ต").setStyle(ButtonStyle.Secondary),
     );
 
     await interaction.editReply({

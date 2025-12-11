@@ -19,20 +19,20 @@ module.exports = {
       const base = readBase();
 
       // ===== ค่าจำเป็นตามสคีมา =====
-      const SLIPOK_KEY   = base?.API_SLIPOK_KEY || "SLIPOK_XXXXXX";
-      const BRANCH_ID    = base?.SLIPOK_BRANCH_ID || "12345";
-      const PP_PHONE     = base?.เบอร์รับเงินพ้อมเพย์ || "064XXXXXXX";
-      const MIN_BANK     = base?.เติมเงินขั้นต่ำของธนาคาร || "5";
+      const SLIPOK_KEY = base?.API_SLIPOK_KEY || "SLIPOK_XXXXXX";
+      const BRANCH_ID = base?.SLIPOK_BRANCH_ID || "12345";
+      const PP_PHONE = base?.เบอร์รับเงินพ้อมเพย์ || "064XXXXXXX";
+      const MIN_BANK = base?.เติมเงินขั้นต่ำของธนาคาร || "5";
 
-      const TM_KEY_ID    = base?.API_TRUEMONEY_KEY_ID || "ak_live_xxxxx";
-      const TM_BASE      = base?.TRUEMONEY_BASE || "https://true-wallet-voucher-production.up.railway.app";
+      const TM_KEY_ID = base?.API_TRUEMONEY_KEY_ID || "ak_live_xxxxx";
+      const TM_BASE = base?.TRUEMONEY_BASE || "https://true-wallet-voucher-production.up.railway.app";
       const WALLET_PHONE = base?.เบอร์รับเงินวอเลท || "080XXXXXXX";
 
-      const CHK_CH_ID    = base?.ไอดีช่องเช็คสลิป || "";
-      const NOTI_CH_ID   = base?.ไอดีช่องแจ้งเตือนเติมเงิน || "";
-      const ROLE_CHECK   = base?.ยศไอดีเช็คสลิป || "";
+      const CHK_CH_ID = base?.ไอดีช่องเช็คสลิป || "";
+      const NOTI_CH_ID = base?.ไอดีช่องแจ้งเตือนเติมเงิน || "";
+      const ROLE_CHECK = base?.ยศไอดีเช็คสลิป || "";
       const ROLE_SUCCESS = base?.ไอดียศได้รับเมื่อเติมเงิน || "";
-      const CHECK_MIN    = base?.ปรับกำหนดเวลาเช็คสลิป || "5";
+      const CHECK_MIN = base?.ปรับกำหนดเวลาเช็คสลิป || "5";
 
       // === 1) ตั้งค่า API ธนาคาร (SlipOK) ===
       // รองรับทั้ง customId เก่าและใหม่
@@ -140,6 +140,57 @@ module.exports = {
             ),
             new ActionRowBuilder().addComponents(
               new TextInputBuilder().setCustomId("check_sliptime").setLabel("[ 🕐 เวลาเช็คสลิป (นาที) ]").setStyle(TextInputStyle.Short).setPlaceholder("เช่น 5").setRequired(false).setValue(String(CHECK_MIN))
+            ),
+          );
+        return interaction.showModal(modal);
+      }
+
+      // === 4) ตั้งค่า Roblox Robux ===
+      if (interaction.customId === "modal_roblox_config") {
+        const ROBUX_RATE = base?.ROBUX_RATE || "3.5";
+        const ROBUX_ENABLED = base?.ROBUX_ENABLED === false ? "ปิด" : "เปิด";
+        const ROBUX_NOTIFY = base?.ROBUX_NOTIFY_CHANNEL || "";
+        const ROBUX_COOLDOWN = base?.ROBUX_PAYOUT_COOLDOWN || "5";
+
+        const modal = new ModalBuilder()
+          .setCustomId("roblox_modal_config")
+          .setTitle("ตั้งค่า Roblox Robux Payout")
+          .addComponents(
+            new ActionRowBuilder().addComponents(
+              new TextInputBuilder()
+                .setCustomId("robux_rate")
+                .setLabel("[ 💱 เรท Robux (3.5 หรือ 4) ]")
+                .setStyle(TextInputStyle.Short)
+                .setPlaceholder("3.5 หรือ 4")
+                .setRequired(false)
+                .setValue(String(ROBUX_RATE))
+            ),
+            new ActionRowBuilder().addComponents(
+              new TextInputBuilder()
+                .setCustomId("robux_enabled")
+                .setLabel("[ 🔐 เปิด/ปิด ระบบ Robux (เปิด/ปิด) ]")
+                .setStyle(TextInputStyle.Short)
+                .setPlaceholder("เปิด หรือ ปิด")
+                .setRequired(false)
+                .setValue(ROBUX_ENABLED)
+            ),
+            new ActionRowBuilder().addComponents(
+              new TextInputBuilder()
+                .setCustomId("robux_notify_channel")
+                .setLabel("[ 🔔 ID ช่องแจ้งเตือน Payout ]")
+                .setStyle(TextInputStyle.Short)
+                .setPlaceholder("ID ช่องสำหรับแจ้งเตือน")
+                .setRequired(false)
+                .setValue(String(ROBUX_NOTIFY))
+            ),
+            new ActionRowBuilder().addComponents(
+              new TextInputBuilder()
+                .setCustomId("robux_cooldown")
+                .setLabel("[ ⏱️ Cooldown ระหว่าง Payout (วินาที) ]")
+                .setStyle(TextInputStyle.Short)
+                .setPlaceholder("เช่น 5")
+                .setRequired(false)
+                .setValue(String(ROBUX_COOLDOWN))
             ),
           );
         return interaction.showModal(modal);

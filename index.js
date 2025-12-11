@@ -23,6 +23,9 @@ const client = new Client({
   partials: [Partials.Channel, Partials.Message],
 });
 
+// เพิ่มเพดาน listener ทันที (ก่อน bind event) กัน warning MaxListeners
+client.setMaxListeners(50);
+
 // ป้องกัน Event ซ้อน: เก็บรายการ (eventName,filePath) ที่ bind ไปแล้ว
 const boundEvents = new Set();
 
@@ -93,13 +96,41 @@ client.once(Events.ClientReady, () => {
   try {
     client.user.setActivity('Top-up Service', { type: ActivityType.Playing });
   } catch {}
-  // เพิ่มเพดาน listener หากโปรเจ็กต์มีหลาย handler
-  client.setMaxListeners(25);
+  // เพิ่มเพดาน listener หากโปรเจ็กต์มีหลาย handler (ซ้ำอีกรอบสำหรับ safety)
+  client.setMaxListeners(50);
+
+  // Diagnostic: log how many application commands are registered (global / guild)
+  (async () => {
+    try {
+      const globalCmds = await client.application.commands.fetch();
+      console.log(`📝 Global commands registered: ${globalCmds.size}`);
+      if (globalCmds.size) {
+        console.log('   Global:', [...globalCmds.values()].map(c => c.name).join(', '));
+      }
+
+      const guildId = process.env.DISCORD_GUILD_ID;
+      if (guildId) {
+        const guild = client.guilds.cache.get(guildId);
+        if (guild) {
+          const guildCmds = await guild.commands.fetch();
+          console.log(`📝 Guild commands registered for ${guild.name}: ${guildCmds.size}`);
+          if (guildCmds.size) {
+            console.log('   Guild:', [...guildCmds.values()].map(c => c.name).join(', '));
+          }
+        } else {
+          console.warn(`⚠️ Guild ${guildId} not found in cache; ensure the bot is in that server.`);
+        }
+      }
+    } catch (err) {
+      console.warn('⚠️ Failed to fetch application commands for diagnostics:', err.message);
+    }
+  })();
 });
 
 // slash commands dispatcher (สั้น กระทัดรัด)
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand?.()) return;
+  console.log(`🪄 Slash command invoked: /${interaction.commandName} by ${interaction.user.tag}`);
   const cmd = client.commands.get(interaction.commandName);
   if (!cmd) return;
   try {
