@@ -26,7 +26,16 @@ module.exports = {
         const embed = new EmbedBuilder()
           .setColor(COLOR)
           .setTitle("<:Ts_0_discord_bank:1398972893416914965> เลือกช่องทางเติมเงิน")
+
+          .addFields(
+            {
+              name: '<:Ts_12_discord_abane:1397694204863315998> เงื่อนไขการเติมเงิน',
+              value: `\`\`\`เติมเงินผ่านซอง Truemoney wallet หัก 5 บาทต่อ 1 link\`\`\``,
+              inline: false
+            }
+          )
           .setImage(imageUrl);
+
 
         // ⚠️ คง customId / values เดิมทั้งหมดไว้ตามที่ Dev ใช้อยู่
         const select = new ActionRowBuilder().addComponents(

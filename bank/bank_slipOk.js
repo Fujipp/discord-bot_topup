@@ -197,7 +197,7 @@ module.exports = {
             content: interaction.message.content ?? null,
             embeds: interaction.message.embeds ?? [],
             components: interaction.message.components ?? []
-          }).catch(() => {});
+          }).catch(() => { });
         }
 
         if (selectedValue === 'เติมสแกนจ่าย') {
@@ -231,9 +231,9 @@ module.exports = {
     const replyErr = async (title) => {
       const e = new EmbedBuilder().setColor(0xFF3300).setTitle(title);
       if (interaction.deferred || interaction.replied) {
-        return interaction.editReply({ embeds: [e] }).catch(() => {});
+        return interaction.editReply({ embeds: [e] }).catch(() => { });
       }
-      return interaction.reply({ embeds: [e], ephemeral: true }).catch(() => {});
+      return interaction.reply({ embeds: [e], ephemeral: true }).catch(() => { });
     };
 
     try {
@@ -278,10 +278,11 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor(0x37373D)
         .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-        .setTitle('🏛️ เติมเงินผ่านพร้อมเพย์')
+        .setTitle('<:Ts_0_discord_bank:1398972893416914965>  เติมเงินผ่านพร้อมเพย์')
         .addFields(
-          { name: `🕐 กรุณาชำระภายใน ${minutes_cfg} นาที`, value: '_ _' },
-          { name: '👛 จำนวนเงินที่ต้องชำระ', value: `\`${amount.toFixed(2)} THB\`` }
+          { name: `<:Ts_10_discord_Clock:1397694191429095675> กรุณาชำระภายใน ${minutes_cfg} นาที`, value: '_ _' },
+          { name: '<:Ts_19_discord_coin:1397694253676630066> จำนวนเงินที่ต้องชำระ', value: `\`${amount.toFixed(2)} THB\`` },
+          { name: `<:Ts_9_discord_member:1397694189575344298> ชื่อบัญชี`, value: `\`\`\`นัทธมน ทองคำอ้น\`\`\`` }
         )
         .setThumbnail(interaction.user.displayAvatarURL())
         .setImage(`attachment://qr_${phone}_${amount}.png`)
@@ -295,7 +296,7 @@ module.exports = {
       );
 
       // ✅ ephemeral ที่ถูกต้อง
-      await interaction.reply({ embeds: [embed], components: [row], files: [attachment], ephemeral: true }).catch(() => {});
+      await interaction.reply({ embeds: [embed], components: [row], files: [attachment], ephemeral: true }).catch(() => { });
 
       // เคานต์ดาวน์แก้ไข embed
       const tick = setInterval(async () => {
@@ -315,13 +316,13 @@ module.exports = {
               .setTitle('❌ เกินเวลาที่กำหนด')
               .setDescription('- หากทำรายการไม่ทันให้เปิดเมนูเติมเงินใหม่อีกครั้ง\n- แนบสลิปไม่ทันให้เปิดเมนูเติมเงินใหม่แล้วแนบได้เลย\n\nขออภัยหากคุณได้ทำรายการไปแล้ว')
               .setThumbnail(interaction.user.displayAvatarURL());
-            return interaction.editReply({ embeds: [timeoutEmbed], components: [] }).catch(() => {});
+            return interaction.editReply({ embeds: [timeoutEmbed], components: [] }).catch(() => { });
           }
 
           const updated = EmbedBuilder.from(embed)
-            .spliceFields(1, 0, { name: '🕐 เหลือเวลาอีก', value: `\`${m} นาที ${s.toString().padStart(2, '0')} วินาที\`` });
+            .spliceFields(1, 0, { name: '<:Ts_10_discord_outoftime:1397694356563038248> เหลือเวลาอีก', value: `\`${m} นาที ${s.toString().padStart(2, '0')} วินาที\`` });
 
-          await interaction.editReply({ embeds: [updated] }).catch(() => {});
+          await interaction.editReply({ embeds: [updated] }).catch(() => { });
         } catch (e) {
           clearInterval(tick);
           console.error('countdown edit error:', e);

@@ -1,0 +1,514 @@
+{
+  "1108816021915176962": {
+    "count": 1,
+    "totalAmount": 16,
+    "history": [
+      {
+        "amount": 16,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-10T11:18:48.044Z"
+      }
+    ]
+  },
+  "1308478122705813616": {
+    "count": 2,
+    "totalAmount": 83,
+    "history": [
+      {
+        "amount": 15,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-11T12:31:28.885Z"
+      },
+      {
+        "amount": 68,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-12T11:59:44.870Z"
+      }
+    ]
+  },
+  "971459409802846240": {
+    "count": 4,
+    "totalAmount": 465,
+    "history": [
+      {
+        "amount": 95,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-13T09:38:59.668Z"
+      },
+      {
+        "amount": 80,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-15T08:30:18.000Z"
+      },
+      {
+        "amount": 150,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-25T11:37:08.974Z"
+      },
+      {
+        "amount": 140,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-25T12:46:51.524Z"
+      }
+    ]
+  },
+  "1207376273136164908": {
+    "count": 1,
+    "totalAmount": 172,
+    "history": [
+      {
+        "amount": 172,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-13T11:41:23.477Z"
+      }
+    ]
+  },
+  "1355349290641527008": {
+    "count": 2,
+    "totalAmount": 344,
+    "history": [
+      {
+        "amount": 58,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-13T14:39:41.298Z"
+      },
+      {
+        "amount": 286,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-20T05:48:25.488Z"
+      }
+    ]
+  },
+  "1238077699248099374": {
+    "count": 2,
+    "totalAmount": 58,
+    "history": [
+      {
+        "amount": 53,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-14T11:03:53.928Z"
+      },
+      {
+        "amount": 5,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-14T11:05:43.083Z"
+      }
+    ]
+  },
+  "1321838488596779143": {
+    "count": 1,
+    "totalAmount": 58,
+    "history": [
+      {
+        "amount": 58,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-15T01:35:53.053Z"
+      }
+    ]
+  },
+  "1017739346033516574": {
+    "count": 2,
+    "totalAmount": 146,
+    "history": [
+      {
+        "amount": 65,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-15T09:56:56.630Z"
+      },
+      {
+        "amount": 81,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-03T05:06:51.905Z"
+      }
+    ]
+  },
+  "804356817853218827": {
+    "count": 5,
+    "totalAmount": 318,
+    "history": [
+      {
+        "amount": 86,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-15T15:08:22.685Z"
+      },
+      {
+        "amount": 58,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-16T18:31:04.389Z"
+      },
+      {
+        "amount": 58,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-22T14:55:49.113Z"
+      },
+      {
+        "amount": 58,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-01T18:23:52.829Z"
+      },
+      {
+        "amount": 58,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-01T18:48:07.324Z"
+      }
+    ]
+  },
+  "1324866600251162736": {
+    "count": 4,
+    "totalAmount": 545,
+    "history": [
+      {
+        "amount": 58,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-16T18:31:46.300Z"
+      },
+      {
+        "amount": 58,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-16T18:41:34.178Z"
+      },
+      {
+        "amount": 286,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-18T13:14:53.516Z"
+      },
+      {
+        "amount": 143,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-20T08:54:42.310Z"
+      }
+    ]
+  },
+  "1024919887887466538": {
+    "count": 2,
+    "totalAmount": 186,
+    "history": [
+      {
+        "amount": 100,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-18T07:44:42.872Z"
+      },
+      {
+        "amount": 86,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-25T13:10:47.304Z"
+      }
+    ]
+  },
+  "1295785377063506033": {
+    "count": 1,
+    "totalAmount": 48,
+    "history": [
+      {
+        "amount": 48,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-18T14:05:51.357Z"
+      }
+    ]
+  },
+  "912946783917846529": {
+    "count": 3,
+    "totalAmount": 67,
+    "history": [
+      {
+        "amount": 53,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-18T17:48:48.838Z"
+      },
+      {
+        "amount": 5,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-18T17:51:09.620Z"
+      },
+      {
+        "amount": 9,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-01T13:50:11.942Z"
+      }
+    ]
+  },
+  "1042793458353569792": {
+    "count": 1,
+    "totalAmount": 110,
+    "history": [
+      {
+        "amount": 110,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-21T05:52:32.720Z"
+      }
+    ]
+  },
+  "1157575082990907462": {
+    "count": 1,
+    "totalAmount": 100,
+    "history": [
+      {
+        "amount": 100,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-22T06:23:05.027Z"
+      }
+    ]
+  },
+  "1286765858131148903": {
+    "count": 2,
+    "totalAmount": 258,
+    "history": [
+      {
+        "amount": 143,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-22T08:48:46.119Z"
+      },
+      {
+        "amount": 115,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-26T00:33:42.958Z"
+      }
+    ]
+  },
+  "855457796728553472": {
+    "count": 2,
+    "totalAmount": 58,
+    "history": [
+      {
+        "amount": 53,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-22T12:34:27.707Z"
+      },
+      {
+        "amount": 5,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-22T12:35:59.563Z"
+      }
+    ]
+  },
+  "1333701774145749007": {
+    "count": 1,
+    "totalAmount": 95,
+    "history": [
+      {
+        "amount": 95,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-24T02:25:30.991Z"
+      }
+    ]
+  },
+  "952698401005400146": {
+    "count": 1,
+    "totalAmount": 60,
+    "history": [
+      {
+        "amount": 60,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-25T10:42:51.825Z"
+      }
+    ]
+  },
+  "1350467896395960320": {
+    "count": 3,
+    "totalAmount": 605,
+    "history": [
+      {
+        "amount": 135,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-25T12:37:43.519Z"
+      },
+      {
+        "amount": 235,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-26T09:28:56.936Z"
+      },
+      {
+        "amount": 235,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-26T17:31:41.678Z"
+      }
+    ]
+  },
+  "1174309239074848808": {
+    "count": 2,
+    "totalAmount": 58,
+    "history": [
+      {
+        "amount": 41,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-26T17:53:14.586Z"
+      },
+      {
+        "amount": 17,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-26T18:11:17.942Z"
+      }
+    ]
+  },
+  "1270685149117546529": {
+    "count": 2,
+    "totalAmount": 458,
+    "history": [
+      {
+        "amount": 343,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T05:47:29.711Z"
+      },
+      {
+        "amount": 115,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-31T07:23:55.587Z"
+      }
+    ]
+  },
+  "942056359627730995": {
+    "count": 2,
+    "totalAmount": 60,
+    "history": [
+      {
+        "amount": 55,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T06:44:43.666Z"
+      },
+      {
+        "amount": 5,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T08:24:06.720Z"
+      }
+    ]
+  },
+  "1022830376823050351": {
+    "count": 2,
+    "totalAmount": 100,
+    "history": [
+      {
+        "amount": 55,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T10:53:39.261Z"
+      },
+      {
+        "amount": 45,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T10:58:36.345Z"
+      }
+    ]
+  },
+  "1002191865795317850": {
+    "count": 1,
+    "totalAmount": 90,
+    "history": [
+      {
+        "amount": 90,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T12:28:41.782Z"
+      }
+    ]
+  },
+  "932178270915559435": {
+    "count": 5,
+    "totalAmount": 490,
+    "history": [
+      {
+        "amount": 110,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T15:39:52.219Z"
+      },
+      {
+        "amount": 35,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T15:41:22.831Z"
+      },
+      {
+        "amount": 55,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T15:49:07.468Z"
+      },
+      {
+        "amount": 5,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-27T15:50:12.043Z"
+      },
+      {
+        "amount": 285,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-02T05:40:59.278Z"
+      }
+    ]
+  },
+  "771974379852660767": {
+    "count": 3,
+    "totalAmount": 120,
+    "history": [
+      {
+        "amount": 53,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-31T15:34:43.297Z"
+      },
+      {
+        "amount": 5,
+        "method": "TrueMoney",
+        "timestamp": "2025-12-31T15:38:02.850Z"
+      },
+      {
+        "amount": 62,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-02T17:13:17.151Z"
+      }
+    ]
+  },
+  "1109138671858356285": {
+    "count": 1,
+    "totalAmount": 115,
+    "history": [
+      {
+        "amount": 115,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-01T05:56:09.573Z"
+      }
+    ]
+  },
+  "875709072983355422": {
+    "count": 1,
+    "totalAmount": 400,
+    "history": [
+      {
+        "amount": 400,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-02T09:44:56.253Z"
+      }
+    ]
+  },
+  "875683730033897503": {
+    "count": 1,
+    "totalAmount": 86,
+    "history": [
+      {
+        "amount": 86,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-02T10:51:38.412Z"
+      }
+    ]
+  },
+  "1432392577000411210": {
+    "count": 2,
+    "totalAmount": 215,
+    "history": [
+      {
+        "amount": 115,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-02T17:29:37.645Z"
+      },
+      {
+        "amount": 100,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-03T13:46:20.779Z"
+      }
+    ]
+  },
+  "1391889469044555818": {
+    "count": 1,
+    "totalAmount": 143,
+    "history": [
+      {
+        "amount": 143,
+        "method": "TrueMoney",
+        "timestamp": "2026-01-03T09:13:47.815Z"
+      }
+    ]
+  }
+}

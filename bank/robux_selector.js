@@ -316,6 +316,11 @@ module.exports = {
                     return interaction.editReply({ embeds: [errorEmbed] });
                 }
 
+                // ดึงยอด Robux ในกลุ่มเพื่อเช็คว่าพอไหม
+                const { getGroupFunds } = require("../api/roblox");
+                const fundsResult = await getGroupFunds();
+                const groupRobux = fundsResult.ok ? fundsResult.robux : 0;
+
                 // มีสิทธิ์ - แสดง packages (จำกัดแค่ 25 options)
                 const packages = getRobuxPackages().slice(0, 25);
                 const balance = Number(getBalance(interaction.user.id));
@@ -323,12 +328,31 @@ module.exports = {
 
                 const options = packages.map((pkg, index) => {
                     const canAfford = balance >= pkg.price;
+                    const groupHasEnough = groupRobux >= pkg.robux;
+                    const canSelect = canAfford && groupHasEnough;
+
+                    let description = '';
+                    if (!groupHasEnough) {
+                        description = '❌ ยอดในกลุ่มไม่พอ';
+                    } else if (!canAfford) {
+                        description = '❌ ยอดเงินไม่พอ';
+                    } else {
+                        description = '✅';
+                    }
+
                     return {
                         label: `${pkg.robux} Robux (${pkg.price} บาท)`,
                         value: `robux_pkg_${index}_${result.userId}`,
-                        description: `${canAfford ? '✅' : '❌ ยอดไม่พอ'}`,
+                        description: description,
                         emoji: { id: "1397902872146083861", name: "Icon_Square_robux_1" },
+                        default: false,
                     };
+                });
+
+                // Filter out options where group doesn't have enough (disabled = not in list)
+                const selectableOptions = options.filter((opt, index) => {
+                    const pkg = packages[index];
+                    return groupRobux >= pkg.robux;
                 });
 
                 const successEmbed = new EmbedBuilder()
@@ -339,15 +363,24 @@ module.exports = {
                     .addFields(
                         { name: '🎮 Roblox Username', value: `\`\`\`${result.username}\`\`\``, inline: true },
                         { name: '💰 ยอดเงินคงเหลือ', value: `\`\`\`${balance.toFixed(2)} บาท\`\`\``, inline: true },
-                        { name: '💱 เรทปัจจุบัน', value: `\`\`\`1 บาท = ${rate} Robux\`\`\``, inline: true }
+                        { name: '💱 เรทปัจจุบัน', value: `\`\`\`1 บาท = ${rate} Robux\`\`\``, inline: true },
+                        { name: '<:Icon_Square_robux_1:1397902872146083861> Robux ในกลุ่ม', value: `\`\`\`${groupRobux.toLocaleString()} R$\`\`\``, inline: true }
                     )
                     .setFooter({ text: '© discord.gg/snowwhite | All Rights Reserved.' });
+
+                // ถ้าไม่มี package ที่เลือกได้เลย
+                if (selectableOptions.length === 0) {
+                    successEmbed.setColor(0xFF0000)
+                        .setTitle('<:Ts_22_discord_1false:1397892604040974479> ไม่มี Package ที่เลือกได้')
+                        .setDescription('ขณะนี้ยอด Robux ในกลุ่มไม่เพียงพอสำหรับทุก Package\n\nกรุณารอสักครู่แล้วลองใหม่อีกครั้ง');
+                    return interaction.editReply({ embeds: [successEmbed], components: [] });
+                }
 
                 const selectRow = new ActionRowBuilder().addComponents(
                     new StringSelectMenuBuilder()
                         .setCustomId("robux_package_select")
                         .setPlaceholder("🎮 เลือก Robux Package")
-                        .addOptions(options)
+                        .addOptions(selectableOptions)
                 );
 
                 return interaction.editReply({ embeds: [successEmbed], components: [selectRow] });

@@ -3,6 +3,18 @@ const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder
 const fs = require("fs"); const path = require("path");
 const { getGroupInfo, getGroupFunds, getGroupIcon, getConfig, getGroupRevenueSummary } = require("../api/roblox");
 
+// Helper function to get config from logdata.json
+function getLogdataConfig() {
+  try {
+    const logdataPath = path.join(__dirname, '..', 'update', 'logdata.json');
+    const data = fs.readFileSync(logdataPath, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('[Payment] Error reading logdata.json:', err.message);
+    return {};
+  }
+}
+
 /**
  * ดึงข้อมูล Roblox Group ทั้งหมด (ชื่อกลุ่ม, owner, memberCount, Robux balance, icon, revenue)
  */
@@ -43,31 +55,43 @@ async function fetchRobloxGroupData() {
  * สร้าง Embed สำหรับ Payment
  */
 function buildPaymentEmbed(group) {
-  // ยอดรวมที่เคยมี = Robux คงเหลือ + การจ่ายค่าตอบแทนชุมชน (ที่จ่ายออกไปแล้ว)
-  const totalEverHad = group.robux + (group.groupPayoutRobux || 0);
+  // Get rate from logdata.json to determine image
+  const logdata = getLogdataConfig();
+  const rate = parseFloat(logdata.ROBUX_RATE) || 3.5;
+
+  // Select image based on rate
+  let imageUrl;
+  if (rate >= 4) {
+    imageUrl = "https://img5.pic.in.th/file/secure-sv1/IMG_40467ca492945914eecc.png";
+  } else {
+    // Default to 3.5 rate image
+    imageUrl = "https://img2.pic.in.th/875bf3130939b2ba.png";
+  }
+
+  console.log(`[Payment] ROBUX_RATE: ${logdata.ROBUX_RATE}, parsed rate: ${rate}, using image: ${rate >= 4 ? 'rate 4' : 'rate 3.5'}`);
 
   const embed = new EmbedBuilder()
     .setColor('#EFFCFF')
-    .setTitle('ROBUX GROUP AUTO')
+    .setTitle('Robux group auto 24 hours')
     .setFooter({ text: '© discord.gg/snowwhite | All Rights Reserved.' })
     .addFields(
       {
-        name: '<:Ts_12_discord_abane:1397694204863315998> เงื่อนไขอ่านก่อนทำรายการ',
-        value: `\`\`\`เติมเงินผ่านซองอั่งเปา -5 บาทต่อ 1 link\`\`\``,
+        name: '<:Icon_Square_robux_1:1397902872146083861> Robux คงเหลือ',
+        value: `\`\`\`${group.robux.toLocaleString()}\`\`\``,
         inline: false
       },
       {
-        name: '<:Icon_Square_robux_1:1397902872146083861> Robux ทั้งหมดที่เคยมี',
-        value: `\`\`\`${totalEverHad.toLocaleString()} R$\`\`\``,
-        inline: true
+        name: '📋 วิธีการเติมโรกลุ่ม',
+        value: `\`\`\`กด เติมเงิน → ส่งสลิปการโอน → กด ซื้อ Robux โรจะเข้าตัวทันที\`\`\``,
+        inline: false
       },
       {
-        name: '<:Icon_Square_robux_1:1397902872146083861> Robux คงเหลือ',
-        value: `\`\`\`${group.robux.toLocaleString()}\`\`\``,
-        inline: true
+        name: '📌 ข้อควรรู้',
+        value: `\`\`\`• สลิปที่ไม่มี Qrcode ระบบจะตรวจสอบยอดเงินไม่ได้ ให้ส่งสลิปมาใน <#ห้องทิกเกต>\n• เติมเงินผ่านซองวอเลต มีค่าธรรมเนียม 5 บาท หากจะเติม 200 บาท ให้ใส่จำนวน 205 บาท\n• สามารถเช็คว่าเติมได้หรือไม่ได้ กดที่ ซื้อโรบัค แล้วใส่ username (ชื่อในเกม หลัง@) เพื่อเช็คได้ทันที\`\`\``,
+        inline: false
       }
     )
-    .setImage("https://img5.pic.in.th/file/secure-sv1/robloxeaea4c4e82b0c508.png");
+    .setImage(imageUrl);
 
   return embed;
 }

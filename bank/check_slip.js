@@ -18,10 +18,10 @@ function readLog() {
 const SLIP_ERRORS = {
   1005: "อัปโหลดได้เฉพาะ .jpg .jpeg .png",
   1006: "รูปภาพไม่ถูกต้อง",
-  1007: "ไม่มี QR ในรูป — ลองครอปให้เหลือเฉพาะ QR",
+  1007: "ไม่มี QR ในรูป — ลองครอปให้เหลือเฉพาะ QRไม่มี QR CODE ในรูป - ให้ส่งรูปสลิปมาทาง Ticket (หากร้านปิดอยู่ห้อง Ticket จะไม่แสดง)",
   1008: "QR ไม่ใช่สำหรับตรวจสอบการชำระเงิน",
   1009: "ระบบธนาคารขัดข้องชั่วคราว",
-  1010: "สลิปจากธนาคาร — รอตรวจสอบหลังการโอน",
+  1010: "Qr code กำลังประมวลผล - หากเป็นสลิปจากธนาคารกรุงเทพให้รอ 1-2 นาที แล้วส่งใหม่อีกรอบ",
   1011: "QR หมดอายุ / ไม่มีรายการ",
   1012: "สลิปซ้ำ — เคยส่งมาแล้ว",
   1013: "ยอดที่ส่งไม่ตรงกับยอดสลิป",
@@ -47,7 +47,7 @@ async function verifyViaUrl(branchId, apiKey, imageUrl) {
   let data = null;
   try {
     data = await res.json();
-  } catch {}
+  } catch { }
   return { ok: res.ok, status: res.status, body: data || {} };
 }
 
@@ -73,7 +73,7 @@ async function verifyViaFiles(branchId, apiKey, imageUrl) {
   let data = null;
   try {
     data = await res.json();
-  } catch {}
+  } catch { }
   return { ok: res.ok, status: res.status, body: data || {} };
 }
 
@@ -110,7 +110,8 @@ function buildSuccessEmbed({ username, avatar, amount, newBalance, method, times
         inline: false,
       },
       {
-        name: "<:Ts_10_discord_Clock:1397694191429095675> : วันที่และเวลาทำรายการ", value: `${timestamp}`, inline: false },
+        name: "<:Ts_10_discord_Clock:1397694191429095675> : วันที่และเวลาทำรายการ", value: `${timestamp}`, inline: false
+      },
     );
 }
 
@@ -128,7 +129,8 @@ function buildFailEmbed({ avatar, reason, timestamp }) {
         inline: false,
       },
       {
-        name: "<:Ts_10_discord_outoftime:1397694356563038248> : วันที่และเวลาทำรายการ", value: `${timestamp}`, inline: false },
+        name: "<:Ts_10_discord_outoftime:1397694356563038248> : วันที่และเวลาทำรายการ", value: `${timestamp}`, inline: false
+      },
     );
 }
 
@@ -244,24 +246,24 @@ module.exports = {
             // แจ้งเตือนช่อง notify (ถ้าตั้ง)
             const notifyId = String(cfg?.["ไอดีช่องแจ้งเตือนเติมเงิน"] || "");
             if (notifyId) {
-            const ch = message.guild.channels.cache.get(notifyId);
-            if (ch?.isTextBased?.() || ch?.send) {
+              const ch = message.guild.channels.cache.get(notifyId);
+              if (ch?.isTextBased?.() || ch?.send) {
                 await ch.send({
-                embeds: [
+                  embeds: [
                     new EmbedBuilder()
-                    .setColor(COLOR)
-                    .setTitle("<:Ts_22_discord_1ture:1397892606209429584> เติมเงินสำเร็จ")
-                    .setDescription("\n")
-                    .setThumbnail(avatar)
-                    .setImage("https://www.animatedimages.org/data/media/562/animated-line-image-0312.gif")
-                    .setFields(
+                      .setColor(COLOR)
+                      .setTitle("<:Ts_22_discord_1ture:1397892606209429584> เติมเงินสำเร็จ")
+                      .setDescription("\n")
+                      .setThumbnail(avatar)
+                      .setImage("https://www.animatedimages.org/data/media/562/animated-line-image-0312.gif")
+                      .setFields(
                         { name: "<:Ts_9_discord_member:1397694189575344298> : คนทำรายการ", value: `\`\`\`${message.author.username}\`\`\``, inline: false },
                         { name: "<:Ts_14_discord_pointg:1397694229333016647> : จำนวณเงินที่เติม", value: `\`\`\`${amount.toFixed(2)}\`\`\``, inline: false },
                         { name: "<:Ts_19_discord_coin:1397694253676630066> : จำนวณเงินทั้งหมด", value: `\`\`\`${Number(newBalance || 0).toFixed(2)}\`\`\``, inline: false },
                         { name: "<:Ts_0_discord_bank:1398972893416914965> : ช่องทางการเติม", value: `\`\`\`QR (SlipOK)\`\`\``, inline: false },
                         { name: "<:Ts_10_discord_Clock:1397694191429095675> : วันที่และเวลาทำรายการ", value: tsDiscord(), inline: false },
-                    )
-                ],
+                      )
+                  ],
                 });
               }
             }
